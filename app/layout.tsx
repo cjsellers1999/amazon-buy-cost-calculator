@@ -8,8 +8,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Amazon Buy Cost Calculator",
-  description: "Calculate the actual buy cost of your units when listing or inputing in SellerAmp",
-    generator: 'v0.dev'
+  description: "Calculate the actual buy cost of your units when listing or inputing in Boxem or a repricing software",
 }
 
 export default function RootLayout({

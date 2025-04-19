@@ -7,8 +7,8 @@ import { ThemeProvider } from "@/components/theme-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Amazon FBA Cost Calculator",
-  description: "Calculate the actual cost of your units before sending them to Amazon FBA",
+  title: "Amazon Buy Cost Calculator",
+  description: "Calculate the actual buy cost of your units when listing or inputing in SellerAmp",
     generator: 'v0.dev'
 }
 

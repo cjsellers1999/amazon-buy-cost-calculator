@@ -61,7 +61,7 @@ export function Calculator() {
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <div className="space-y-1">
           <CardTitle>Cost Calculator</CardTitle>
-          <CardDescription>Calculate your final product cost</CardDescription>
+          <CardDescription>Calculate your buy cost</CardDescription>
         </div>
         <ModeToggle />
       </CardHeader>

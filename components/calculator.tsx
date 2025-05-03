@@ -479,69 +479,67 @@ export function Calculator() {
             </Button>
           </CardHeader>
           <CardContent>
-            <ScrollArea className="h-[300px] w-full rounded-md border">
-              <div className="min-w-full">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[30%]">ID</TableHead>
-                      <TableHead className="w-[20%]">Unit Price</TableHead>
-                      <TableHead className="w-[15%]">Quantity</TableHead>
-                      <TableHead className="w-[20%]">Total</TableHead>
-                      <TableHead className="w-[15%] text-right">Actions</TableHead>
+            <div className="min-w-full">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[30%]">ID</TableHead>
+                    <TableHead className="w-[20%]">Unit Price</TableHead>
+                    <TableHead className="w-[15%]">Quantity</TableHead>
+                    <TableHead className="w-[20%]">Total</TableHead>
+                    <TableHead className="w-[15%] text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {items.map((item) => (
+                    <TableRow key={item.itemId}>
+                      <TableCell className="font-medium flex items-center gap-4">
+                        {item.id}
+                        <div className="flex gap-1 mt-1">
+                          {Number.parseFloat(item.discount) > 0 && (
+                            <Badge variant="outline" className="text-xs">
+                              {item.discount}% off
+                            </Badge>
+                          )}
+                          {Number.parseFloat(item.salesTax) > 0 && (
+                            <Badge variant="outline" className="text-xs">
+                              {item.salesTax}% tax
+                            </Badge>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>{formatCurrency(item.finalPrice)}</TableCell>
+                      <TableCell>{item.quantity}</TableCell>
+                      <TableCell>
+                        {formatCurrency(item.finalPrice * Number.parseFloat(item.quantity))}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => startEditItem(item)}
+                            disabled={editingItemId !== null}
+                          >
+                            <Edit2 className="h-4 w-4" />
+                            <span className="sr-only">Edit</span>
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => removeItem(item.itemId)}
+                            className="text-destructive hover:text-destructive"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                            <span className="sr-only">Delete</span>
+                          </Button>
+                        </div>
+                      </TableCell>
                     </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {items.map((item) => (
-                      <TableRow key={item.itemId}>
-                        <TableCell className="font-medium flex items-center gap-4">
-                          {item.id}
-                          <div className="flex gap-1 mt-1">
-                            {Number.parseFloat(item.discount) > 0 && (
-                              <Badge variant="outline" className="text-xs">
-                                {item.discount}% off
-                              </Badge>
-                            )}
-                            {Number.parseFloat(item.salesTax) > 0 && (
-                              <Badge variant="outline" className="text-xs">
-                                {item.salesTax}% tax
-                              </Badge>
-                            )}
-                          </div>
-                        </TableCell>
-                        <TableCell>{formatCurrency(item.finalPrice)}</TableCell>
-                        <TableCell>{item.quantity}</TableCell>
-                        <TableCell>
-                          {formatCurrency(item.finalPrice * Number.parseFloat(item.quantity))}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex justify-end gap-2">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => startEditItem(item)}
-                              disabled={editingItemId !== null}
-                            >
-                              <Edit2 className="h-4 w-4" />
-                              <span className="sr-only">Edit</span>
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => removeItem(item.itemId)}
-                              className="text-destructive hover:text-destructive"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                              <span className="sr-only">Delete</span>
-                            </Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </ScrollArea>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
           <CardFooter>
             <div className="w-full rounded-md bg-muted p-4">

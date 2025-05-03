@@ -145,8 +145,9 @@ export function Calculator() {
 
   const resetCalculator = () => {
     setCost('');
-    setDiscount('');
-    setSalesTax('');
+    // Don't reset discount and sales tax as they typically remain constant
+    // setDiscount("")
+    // setSalesTax("")
     setAdditionalCost('');
     setProductId('');
     setQuantity('1');
@@ -154,11 +155,12 @@ export function Calculator() {
     setDiscountAmount(0);
     setTaxAmount(0);
 
-    // Clear localStorage for form fields
+    // Clear localStorage for form fields, but keep discount and sales tax
     if (typeof window !== 'undefined') {
       localStorage.removeItem('calculator_cost');
-      localStorage.removeItem('calculator_discount');
-      localStorage.removeItem('calculator_salesTax');
+      // Don't remove discount and sales tax from localStorage
+      // localStorage.removeItem("calculator_discount")
+      // localStorage.removeItem("calculator_salesTax")
       localStorage.removeItem('calculator_additionalCost');
       localStorage.removeItem('calculator_quantity');
       localStorage.removeItem('calculator_productId');

@@ -1,5 +1,7 @@
 'use client';
 
+import type React from 'react';
+
 import { useState, useEffect } from 'react';
 import {
   Card,
@@ -110,6 +112,41 @@ export function Calculator() {
     }).format(value);
   };
 
+  // Format input as user types to automatically add decimal points
+  const formatInputValue = (value: string, isPercentage = false) => {
+    // Remove any non-digit characters
+    const digitsOnly = value.replace(/\D/g, '');
+
+    if (digitsOnly === '') return '';
+
+    // Convert to number and divide by 100 to get decimal representation
+    const numericValue = Number.parseInt(digitsOnly, 10) / 100;
+
+    // Format with 2 decimal places
+    return numericValue.toFixed(2);
+  };
+
+  // Handle input changes with automatic decimal formatting
+  const handleCostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedValue = formatInputValue(e.target.value);
+    setCost(formattedValue);
+  };
+
+  const handleDiscountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedValue = formatInputValue(e.target.value, true);
+    setDiscount(formattedValue);
+  };
+
+  const handleSalesTaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedValue = formatInputValue(e.target.value, true);
+    setSalesTax(formattedValue);
+  };
+
+  const handleAdditionalCostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedValue = formatInputValue(e.target.value);
+    setAdditionalCost(formattedValue);
+  };
+
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -134,13 +171,12 @@ export function Calculator() {
             </span>
             <Input
               id="cost"
-              type="number"
-              min="0"
-              step="0.01"
+              type="text"
+              inputMode="numeric"
               placeholder="0.00"
               className="pl-8"
               value={cost}
-              onChange={(e) => setCost(e.target.value)}
+              onChange={handleCostChange}
             />
           </div>
         </div>
@@ -149,13 +185,11 @@ export function Calculator() {
           <div className="relative">
             <Input
               id="discount"
-              type="number"
-              min="0"
-              max="100"
-              step="0.01"
-              placeholder="0"
+              type="text"
+              inputMode="numeric"
+              placeholder="0.00"
               value={discount}
-              onChange={(e) => setDiscount(e.target.value)}
+              onChange={handleDiscountChange}
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
               %
@@ -167,13 +201,11 @@ export function Calculator() {
           <div className="relative">
             <Input
               id="salesTax"
-              type="number"
-              min="0"
-              max="100"
-              step="0.01"
-              placeholder="0"
+              type="text"
+              inputMode="numeric"
+              placeholder="0.00"
               value={salesTax}
-              onChange={(e) => setSalesTax(e.target.value)}
+              onChange={handleSalesTaxChange}
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
               %
@@ -188,13 +220,12 @@ export function Calculator() {
             </span>
             <Input
               id="additionalCost"
-              type="number"
-              min="0"
-              step="0.01"
+              type="text"
+              inputMode="numeric"
               placeholder="0.00"
               className="pl-8"
               value={additionalCost}
-              onChange={(e) => setAdditionalCost(e.target.value)}
+              onChange={handleAdditionalCostChange}
             />
           </div>
         </div>

@@ -211,9 +211,8 @@ export function Calculator() {
   };
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Only allow positive integers for quantity
     const value = e.target.value.replace(/\D/g, '');
-    setQuantity(value === '' ? '1' : value);
+    setQuantity(value);
   };
 
   // Add current item to the list
@@ -226,7 +225,7 @@ export function Calculator() {
       discount,
       salesTax,
       additionalCost,
-      quantity,
+      quantity: quantity || '1',
       finalPrice,
       itemId: Date.now().toString(), // Generate a unique ID for the item
     };
@@ -251,7 +250,7 @@ export function Calculator() {
     setSalesTax(item.salesTax);
     setAdditionalCost(item.additionalCost);
     setProductId(item.id);
-    setQuantity(item.quantity);
+    setQuantity(item.quantity || '1');
   };
 
   // Save edited item
@@ -267,7 +266,7 @@ export function Calculator() {
               discount,
               salesTax,
               additionalCost,
-              quantity,
+              quantity: quantity || '1',
               finalPrice,
               itemId: item.itemId,
             }

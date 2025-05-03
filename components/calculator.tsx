@@ -24,8 +24,15 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 // Define the item type
 interface CalculatorItem {
@@ -54,6 +61,7 @@ export function Calculator() {
   const [items, setItems] = useState<CalculatorItem[]>([]);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [totalAmount, setTotalAmount] = useState<number>(0);
+  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
   // Load values from localStorage on component mount
   useEffect(() => {
@@ -240,6 +248,7 @@ export function Calculator() {
     if (editingItemId === itemId) {
       setEditingItemId(null);
     }
+    setItemToDelete(null);
   };
 
   // Start editing an item
@@ -472,10 +481,30 @@ export function Calculator() {
               <CardTitle>Item List</CardTitle>
               <CardDescription>Your saved items</CardDescription>
             </div>
-            <Button variant="destructive" size="sm" onClick={resetAllData}>
-              <Trash2 className="h-4 w-4 mr-2" />
-              Clear All
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="destructive" size="sm">
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Clear All
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Clear All Items</DialogTitle>
+                  <DialogDescription>
+                    Are you sure you want to delete all items? This action cannot be undone.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter className="flex flex-row justify-end gap-2 sm:justify-end">
+                  <Button variant="outline" onClick={() => {}}>
+                    Cancel
+                  </Button>
+                  <Button variant="destructive" onClick={resetAllData}>
+                    Delete All
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </CardHeader>
           <CardContent>
             <div className="min-w-full">
@@ -503,15 +532,44 @@ export function Calculator() {
                             <Edit2 className="h-4 w-4" />
                             <span className="sr-only">Edit</span>
                           </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => removeItem(item.itemId)}
-                            className="text-destructive hover:text-destructive"
+                          <Dialog
+                            open={itemToDelete === item.itemId}
+                            onOpenChange={(open) => {
+                              if (!open) setItemToDelete(null);
+                            }}
                           >
-                            <Trash2 className="h-4 w-4" />
-                            <span className="sr-only">Delete</span>
-                          </Button>
+                            <DialogTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => setItemToDelete(item.itemId)}
+                                className="text-destructive hover:text-destructive"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                                <span className="sr-only">Delete</span>
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-md">
+                              <DialogHeader>
+                                <DialogTitle>Confirm Deletion</DialogTitle>
+                                <DialogDescription>
+                                  Are you sure you want to delete item {item.id}? This action cannot
+                                  be undone.
+                                </DialogDescription>
+                              </DialogHeader>
+                              <DialogFooter className="flex flex-row justify-end gap-2 sm:justify-end">
+                                <Button variant="outline" onClick={() => setItemToDelete(null)}>
+                                  Cancel
+                                </Button>
+                                <Button
+                                  variant="destructive"
+                                  onClick={() => removeItem(item.itemId)}
+                                >
+                                  Delete
+                                </Button>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
                         </div>
                       </TableCell>
                       <TableCell className="font-medium flex items-center gap-4">
